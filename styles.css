@@ -39,7 +39,7 @@ h1, h2, h3, h4 {
 
 /* Navigation */
 .navbar {
-    background: #8dee2c;
+    background: #000000;
     padding: 1rem 0;
     position: fixed;
     width: 100%;
@@ -60,13 +60,13 @@ h1, h2, h3, h4 {
     text-align: end;
     font-family: 'Playfair Display', serif;
     font-size: 1.5rem;
-    color: var(--primary-color);
+    color: var(--white);
     text-decoration: none;
     font-weight: 700;
 }
 
 .nav-links a {
-    color: var(--text-color);
+    color: var(--white);
     text-decoration: none;
     margin-left: 2rem;
     transition: var(--transition);
@@ -104,7 +104,7 @@ h1, h2, h3, h4 {
     align-items: center;
     justify-content: center;
     text-align: center;
-    padding: 20px;
+    padding: 10px;
     position: relative;
 }
 
@@ -195,7 +195,7 @@ h1, h2, h3, h4 {
 
 /* Courses Section */
 .courses {
-    padding: 5rem 0;
+    padding: 2rem 0;
     background: var(--light-gray);
 }
 
@@ -205,6 +205,8 @@ h1, h2, h3, h4 {
     gap: 30px;
     max-width: 1200px;
     width: 100%;
+    margin-left: 15px;
+    margin-top: 15px;
 }
 
 .card {
@@ -259,7 +261,7 @@ h1, h2, h3, h4 {
 
 /* Взрослая карточка */
 .card-adults .card-front {
-    background: linear-gradient(135deg, #f4fb25f8,  #9ad316);
+    background: linear-gradient(135deg, #c3ef3c,  #a8e714);
     color: rgb(0, 0, 0);
 }
 
@@ -390,15 +392,44 @@ h2 {
 
 
 /*About*/
-.about-block {
-    margin-top: 25px;
+
+.about {
+    margin-left: 10px;
+    margin-right: 10px;
 }
 
-.about-block p {
-    margin-left: 25px;
-    margin-right: 20px;
+.about-block {
+    
+  }
+  
+  .about-block p {
+    background: linear-gradient(135deg, #bdff2e9f, #ffffff);
+    padding: 2.5rem;
+    border-radius: 10px;
+    margin: 2rem auto;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    color: #000000;
+    font-family: 'Arial', sans-serif;
+    font-size: 1.1rem;
+    line-height: 1.8;
     text-align: justify;
-}
+    margin: 0;
+    letter-spacing: 0.3px;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+  }
+  
+  @media (max-width: 768px) {
+    .about-block {
+      padding: 1.5rem;
+      margin: 1rem;
+      border-radius: 8px;
+    }
+    
+    .about-block p {
+      font-size: 1rem;
+      text-align: left;
+    }
+  }
 
 .gallery-grid {
     display: grid;
@@ -601,6 +632,7 @@ video {
 .features-list {
     list-style: none;
     margin: 30px 0;
+    
 }
 
 .features-list li {
@@ -618,10 +650,15 @@ video {
 }
 
 .btn {
-    display: block;
-    width: 100%;
-    padding: 15px;
+    position: absolute;
+    bottom: 20px; /* Фиксированное расстояние от низа */
+    left: 20px;
+    right: 20px;
+    width: 80%;
+    padding: 10px 10px;
+    align-self: center;
     text-align: center;
+    margin-top: auto;
     background: #6dca97;
     color: black;
     text-decoration: none;
@@ -848,6 +885,7 @@ video {
 
 .social-links a {
     font-size: 2.0rem;
+    text-align: center;
 }
 
 .footer-bottom {
