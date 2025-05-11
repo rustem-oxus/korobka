@@ -47,42 +47,11 @@ contactForm.addEventListener('submit', (e) => {
     contactForm.reset();
 });
 
-// Testimonials Slider
-let currentTestimonial = 0;
-const testimonials = [
-    {
-        text: "Harmony Academy transformed my singing abilities. The instructors are amazing!",
-        author: "Jessica R."
-    },
-    {
-        text: "The personalized attention and expert guidance helped me achieve my goals.",
-        author: "Michael S."
-    },
-    {
-        text: "Best decision I've made for my vocal career. Highly recommended!",
-        author: "David L."
-    }
-];
-
-function updateTestimonial() {
-    const testimonialContainer = document.querySelector('.testimonial');
-    const currentTest = testimonials[currentTestimonial];
-    
-    testimonialContainer.innerHTML = `
-        <p>"${currentTest.text}"</p>
-        <cite>- ${currentTest.author}</cite>
-    `;
-    
-    currentTestimonial = (currentTestimonial + 1) % testimonials.length;
-}
-
-// Change testimonial every 5 seconds
-setInterval(updateTestimonial, 5000);
-
 // Animate elements on scroll
 const observerOptions = {
     threshold: 0.2
 }; 
+
 
 const container = document.querySelector('.videos-container');
 const prevButton = document.querySelector('.prev');
@@ -133,3 +102,143 @@ const videoItems = document.querySelectorAll('.video-item');
             behavior: 'auto'
         });
     });
+
+
+//Video carousel
+
+/*document.addEventListener('DOMContentLoaded', function () {
+    const track = document.querySelector('.carousel-track');
+    const slides = Array.from(track.children);
+    const nextButton = document.getElementById('next-button');
+    const prevButton = document.getElementById('prev-button');
+    const dotIndicatorsContainer = document.getElementById('dot-indicators');
+    
+    if (!track || !nextButton || !prevButton || slides.length === 0) {
+        console.warn('Carousel elements not found. Carousel will not initialize.');
+        if (nextButton) nextButton.style.display = 'none';
+        if (prevButton) prevButton.style.display = 'none';
+        return;
+    }
+
+    const slideWidth = slides[0].getBoundingClientRect().width; // Assumes all slides are same width
+    let currentIndex = 0;
+
+    // --- Helper Functions ---
+    // Function to move to a specific slide
+    const moveToSlide = (targetIndex) => {
+        if (!track) return;
+        track.style.transform = 'translateX(-' + slideWidth * targetIndex + 'px)';
+        currentIndex = targetIndex;
+        updateNavButtons();
+        updateDotIndicators();
+        pauseAllVideosExcept(targetIndex);
+    };
+
+    // Function to update navigation button states (disabled at ends)
+    const updateNavButtons = () => {
+        if (!prevButton || !nextButton) return;
+        prevButton.disabled = currentIndex === 0;
+        nextButton.disabled = currentIndex === slides.length - 1;
+    };
+
+    // Function to create and update dot indicators
+    const setupDotIndicators = () => {
+        if (!dotIndicatorsContainer) return;
+        dotIndicatorsContainer.innerHTML = ''; // Clear existing dots
+        slides.forEach((_, index) => {
+            const button = document.createElement('button');
+            button.setAttribute('aria-label', `Go to slide ${index + 1}`);
+            button.classList.add('w-3', 'h-3', 'rounded-full', 'bg-gray-500', 'hover:bg-sky-400', 'transition-colors');
+            if (index === currentIndex) {
+                button.classList.replace('bg-gray-500', 'bg-sky-400');
+                button.classList.add('ring-2', 'ring-sky-300', 'ring-offset-2', 'ring-offset-gray-800');
+            }
+            button.addEventListener('click', () => moveToSlide(index));
+            dotIndicatorsContainer.appendChild(button);
+        });
+    };
+    
+    const updateDotIndicators = () => {
+        if (!dotIndicatorsContainer) return;
+        const dots = Array.from(dotIndicatorsContainer.children);
+        dots.forEach((dot, index) => {
+            dot.classList.toggle('bg-sky-400', index === currentIndex);
+            dot.classList.toggle('bg-gray-500', index !== currentIndex);
+            dot.classList.toggle('ring-2', index === currentIndex);
+            dot.classList.toggle('ring-sky-300', index === currentIndex);
+            dot.classList.toggle('ring-offset-2', index === currentIndex);
+            dot.classList.toggle('ring-offset-gray-800', index === currentIndex);
+        });
+    };
+
+    // Function to pause all videos except the current one
+    const pauseAllVideosExcept = (activeIndex) => {
+        slides.forEach((slide, index) => {
+            const video = slide.querySelector('video');
+            if (video && index !== activeIndex) {
+                video.pause();
+            }
+        });
+    };
+    
+    // --- Event Listeners ---
+    // Next button
+    nextButton.addEventListener('click', () => {
+        if (currentIndex < slides.length - 1) {
+            moveToSlide(currentIndex + 1);
+        }
+    });
+
+    // Previous button
+    prevButton.addEventListener('click', () => {
+        if (currentIndex > 0) {
+            moveToSlide(currentIndex - 1);
+        }
+    });
+let resizeTimeout;
+    window.addEventListener('resize', () => {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(() => {
+            if (slides.length > 0) {
+                const newSlideWidth = slides[0].getBoundingClientRect().width;
+                
+                const newContainerWidth = track.parentElement.getBoundingClientRect().width;
+                
+                const updatedSlideWidth = slides[0].getBoundingClientRect().width;
+                
+                track.style.transform = 'translateX(-' + updatedSlideWidth * currentIndex + 'px)';
+                const currentDynamicSlideWidth = slides[0].getBoundingClientRect().width;
+                
+                track.style.transform = 'translateX(-' + currentDynamicSlideWidth * currentIndex + 'px)';
+
+            }
+        }, 250); // Debounce for 250ms
+    });
+    
+    // Keyboard navigation
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'ArrowRight') {
+            nextButton.click();
+        } else if (event.key === 'ArrowLeft') {
+            prevButton.click();
+        }
+    });
+
+    // --- Initialization ---
+    if (slides.length > 0) {
+        setupDotIndicators();
+        updateNavButtons();
+        pauseAllVideosExcept(currentIndex); // Pause non-active videos on load
+
+        // Initial positioning (especially if slideWidth was 0 initially)
+        // This ensures the carousel is correctly positioned on load after elements are rendered.
+        const initialSlideWidth = slides[0].getBoundingClientRect().width;
+        if (initialSlideWidth > 0) {
+             track.style.transform = 'translateX(-' + initialSlideWidth * currentIndex + 'px)';
+        } else {
+            // Fallback or warning if width is still 0 (e.g. display:none parent)
+            console.warn("Carousel slide width is 0 on init. Ensure container is visible.");
+        }
+    }
+  
+});*/
